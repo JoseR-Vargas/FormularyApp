@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo - Formulary</title>
+    <link rel="stylesheet" href="./css/adminstyles.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>Dashboard Administrativo</h1>
+        <p>Gestión de datos de usuarios</p>
+    </header>
+
+    <main class="admin-container">
+        <!-- Sección de estadísticas rápidas -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <h3>Total Usuarios</h3>
+                <span class="stat-number" id="total-users">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Emails Únicos</h3>
+                <span class="stat-number" id="unique-emails">0</span>
+            </div>
+            <div class="stat-card">
+                <h3>Registros Hoy</h3>
+                <span class="stat-number" id="today-registrations">0</span>
+            </div>
+        </section>
+
+        <!-- Sección de datos de usuarios -->
+        <section class="users-section">
+            <h2>Datos de Usuarios Registrados</h2>
+            <div class="table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Edad</th>
+                            <th>Comida Favorita</th>
+                            <th>Fecha de Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- Ejemplo de datos - serán reemplazados dinámicamente -->
+                        <tr>
+                            <td>
+                                <div class="user-photo">
+                                    <span class="photo-placeholder">📷</span>
+                                </div>
+                            </td>
+                            <td>001</td>
+                            <td>Juan Pérez</td>
+                            <td>juan@email.com</td>
+                            <td>25</td>
+                            <td>Pizza</td>
+                            <td>2024-01-15 14:30</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-photo">
+                                    <span class="photo-placeholder">📷</span>
+                                </div>
+                            </td>
+                            <td>002</td>
+                            <td>María García</td>
+                            <td>maria@email.com</td>
+                            <td>30</td>
+                            <td>Tacos</td>
+                            <td>2024-01-15 15:45</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="user-photo">
+                                    <span class="photo-placeholder">📷</span>
+                                </div>
+                            </td>
+                            <td>003</td>
+                            <td>Carlos López</td>
+                            <td>carlos@email.com</td>
+                            <td>28</td>
+                            <td>Hamburguesas</td>
+                            <td>2024-01-15 16:20</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+
+
+
+
+
+    </main>
+
+    <footer class="admin-footer">
+        <p>&copy; 2024 Formulary Admin Dashboard. Todos los derechos reservados.</p>
+        <a href="../index.html">Volver al formulario principal</a>
+    </footer>
+
+    <!-- Scripts para funcionalidad futura -->
+    <script src="../admin/js/admin.js"></script>
+</body>
+</html>
