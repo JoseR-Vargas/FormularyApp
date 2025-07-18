@@ -125,3 +125,50 @@ window.addUserToTable = function(userData) {
     newPhoto.title = 'Haz clic para descargar la imagen';
     newPhoto.addEventListener('click', handlePhotoClick);
 };
+
+// Función para cargar usuarios desde el backend
+async function loadUsersFromBackend() {
+    try {
+        const response = await fetch('https://backformulary.onrender.com/api/register');
+        const users = await response.json();
+        
+        // Actualizar la tabla con los datos reales
+        const tableBody = document.getElementById('users-table-body');
+        tableBody.innerHTML = '';
+        
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="user-photo">
+                        <img src="${user.selfie}" alt="Foto de usuario" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    </div>
+                </td>
+                <td>${user._id}</td>
+                <td>${user.nombre}</td>
+                <td>${user.correo}</td>
+                <td>${user.edad}</td>
+                <td>${user.comida}</td>
+                <td>${new Date(user.fecha).toLocaleString()}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+        
+        // Actualizar estadísticas
+        document.getElementById('total-users').textContent = users.length;
+        document.getElementById('unique-emails').textContent = new Set(users.map(u => u.correo)).size;
+        
+        const today = new Date().toDateString();
+        const todayUsers = users.filter(u => new Date(u.fecha).toDateString() === today);
+        document.getElementById('today-registrations').textContent = todayUsers.length;
+        
+    } catch (error) {
+        console.error('Error cargando usuarios:', error);
+    }
+}
+
+// Cargar usuarios al inicializar
+document.addEventListener('DOMContentLoaded', function() {
+    loadUsersFromBackend();
+    // ... resto del código existente ...
+});
