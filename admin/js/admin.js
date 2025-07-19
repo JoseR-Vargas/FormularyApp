@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>
-                            <div class="user-photo">
+                            <div class="user-photo" style="cursor: pointer;" title="Haz clic para descargar la imagen">
                                 <img src="${user.selfie}" alt="Foto de usuario" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                             </div>
                         </td>
@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${new Date(user.fecha).toLocaleString()}</td>
                     `;
                     tableBody.appendChild(row);
+                    
+                    // Agregar event listener a la foto recién creada
+                    const photoElement = row.querySelector('.user-photo');
+                    photoElement.addEventListener('click', () => handlePhotoClick(user));
                 });
             }
             
@@ -67,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para descargar imagen
     function downloadImage(imageUrl, fileName) {
+        console.log(' Descargando imagen:', fileName);
         const link = document.createElement('a');
         link.href = imageUrl;
         link.download = fileName || 'usuario_foto.jpg';
@@ -76,37 +81,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Función para manejar el clic en las fotos de usuario
-    function handlePhotoClick(event) {
-        const photoElement = event.target.closest('.user-photo');
-        if (!photoElement) return;
-
-        const row = photoElement.closest('tr');
-        const userId = row.querySelector('td:nth-child(2)').textContent;
-        const userName = row.querySelector('td:nth-child(3)').textContent;
+    function handlePhotoClick(user) {
+        console.log('🖱️ Clic en foto de usuario:', user.nombre);
         
-        const img = photoElement.querySelector('img');
-        if (img && img.src && !img.src.includes('placeholder')) {
-            const fileName = `${userName.replace(/\s+/g, '_')}_${userId}.jpg`;
-            downloadImage(img.src, fileName);
+        if (user.selfie && user.selfie.length > 0) {
+            const fileName = `${user.nombre.replace(/\s+/g, '_')}_${user._id}.jpg`;
+            downloadImage(user.selfie, fileName);
         } else {
-            alert(`No hay imagen disponible para ${userName}`);
+            alert(`No hay imagen disponible para ${user.nombre}`);
         }
-    }
-
-    // Agregar event listeners a todas las fotos de usuario
-    function attachPhotoClickListeners() {
-        const userPhotos = document.querySelectorAll('.user-photo');
-        
-        userPhotos.forEach(photo => {
-            photo.style.cursor = 'pointer';
-            photo.title = 'Haz clic para descargar la imagen';
-            photo.addEventListener('click', handlePhotoClick);
-        });
     }
 
     // Inicializar funcionalidad
     loadUsersFromBackend();
-    attachPhotoClickListeners();
     
     console.log('🔗 Admin dashboard inicializado - Conectado al backend');
 });
@@ -118,9 +105,9 @@ window.addUserToTable = function(userData) {
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>
-            <div class="user-photo">
+            <div class="user-photo" style="cursor: pointer;" title="Haz clic para descargar la imagen">
                 ${userData.photoUrl ? 
-                    `<img src="${userData.photoUrl}" alt="Foto de usuario" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` :
+                    `<img src="${userData.photoUrl}" alt="Foto" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">` :
                     `<span class="photo-placeholder">📷</span>`
                 }
             </div>
@@ -135,8 +122,7 @@ window.addUserToTable = function(userData) {
     
     tableBody.appendChild(row);
     
+    // Agregar event listener a la nueva foto
     const newPhoto = row.querySelector('.user-photo');
-    newPhoto.style.cursor = 'pointer';
-    newPhoto.title = 'Haz clic para descargar la imagen';
-    newPhoto.addEventListener('click', handlePhotoClick);
+    newPhoto.addEventListener('click', () => handlePhotoClick(userData));
 };
