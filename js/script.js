@@ -4,6 +4,36 @@ const unifiedForm = document.getElementById('unifiedForm');
 
 submitButton.addEventListener('click', handleUnifiedSubmit);
 
+// Función para comprimir imagen
+function compressImage(file, maxWidth = 800, quality = 0.7) {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        img.onload = function() {
+            // Calcular nuevas dimensiones manteniendo proporción
+            let { width, height } = img;
+            if (width > maxWidth) {
+                height = (height * maxWidth) / width;
+                width = maxWidth;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Dibujar imagen comprimida
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Convertir a base64 con calidad reducida
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            resolve(compressedBase64);
+        };
+        
+        img.src = URL.createObjectURL(file);
+    });
+}
+
 function handleUnifiedSubmit(e) {
     e.preventDefault();
     console.log('🚀 Función handleUnifiedSubmit ejecutada');
@@ -25,7 +55,7 @@ function handleUnifiedSubmit(e) {
         return;
     }
 
-    console.log('📸 Archivo seleccionado:', file.name);
+    console.log('📸 Archivo seleccionado:', file.name, 'Tamaño:', file.size, 'bytes');
 
     // Validate form data
     if (!formData.nombre || !formData.correo || !formData.edad || !formData.comida) {
@@ -33,23 +63,24 @@ function handleUnifiedSubmit(e) {
         return;
     }
 
-    console.log('✅ Validación pasada, iniciando FileReader');
+    console.log('✅ Validación pasada, comprimiendo imagen...');
 
-    const reader = new FileReader();
-    reader.onload = function () {
-        const base64Image = reader.result;
-        console.log('️ Selfie convertida a base64, longitud:', base64Image.length);
-
-        // Combine form data with selfie
+    // Comprimir imagen antes de enviar
+    compressImage(file)
+    .then(compressedBase64 => {
+        console.log('️ Imagen comprimida, longitud:', compressedBase64.length);
+        
+        // Combine form data with compressed selfie
         const completeData = {
             ...formData,
-            selfie: base64Image
+            selfie: compressedBase64
         };
 
         console.log('📤 Enviando datos al backend...');
         console.log(' URL del backend:', 'https://backformulary.onrender.com/api/register');
 
         // Send both data and selfie to backend
+        console.log(' Iniciando fetch...');
         fetch('https://backformulary.onrender.com/api/register', {
             method: 'POST',
             headers: {
@@ -74,9 +105,11 @@ function handleUnifiedSubmit(e) {
             console.error(' Detalles del error:', error.message);
             alert('Error al enviar los datos y selfie: ' + error.message);
         });
-    };
-    
-    reader.readAsDataURL(file);
+    })
+    .catch(error => {
+        console.error('❌ Error comprimiendo imagen:', error);
+        alert('Error procesando la imagen');
+    });
 }
 
 console.log('🔗 Script cargado, botón encontrado:', submitButton);
