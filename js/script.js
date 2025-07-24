@@ -59,6 +59,13 @@ function handleUnifiedSubmit(e) {
     e.preventDefault();
     console.log('🚀 Función handleUnifiedSubmit ejecutada');
     
+    // Validar reCAPTCHA
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+        alert("Por favor completá el reCAPTCHA.");
+        return;
+    }
+    
     const formData = {
         nombre: unifiedForm.nombre.value,
         correo: unifiedForm.correo.value,
@@ -103,10 +110,11 @@ function handleUnifiedSubmit(e) {
             return;
         }
         
-        // Combine form data with compressed selfie
+        // Combine form data with compressed selfie and reCAPTCHA
         const completeData = {
             ...formData,
-            selfie: compressedBase64
+            selfie: compressedBase64,
+            recaptchaResponse: recaptchaResponse
         };
 
         console.log('📤 Enviando datos al backend...');
@@ -131,6 +139,8 @@ function handleUnifiedSubmit(e) {
             console.log('Datos y selfie enviados exitosamente:', response);
             alert('Datos y selfie enviados correctamente');
             unifiedForm.reset();
+            // Reset reCAPTCHA after successful submission
+            grecaptcha.reset();
         })
         .catch(error => {
             console.error(' Detalles del error:', error.message);
