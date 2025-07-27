@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
 
 body {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
-    color: #000000;
+    background: #111;
+    color: #FFD700;
     font-family: 'Open Sans', Arial, sans-serif;
     min-height: 100vh;
     margin: 0;
@@ -17,20 +17,20 @@ h1 {
     margin-top: 40px;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #000000;
+    color: #FFD700;
     letter-spacing: 2px;
-    text-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+    text-shadow: 0 2px 8px #000;
     text-align: center;
     font-family: 'Open Sans', Arial, sans-serif;
 }
 
 form {
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+    background: #181818;
     border-radius: 12px;
     padding: 32px 28px 20px 28px;
     margin: 24px 0;
-    box-shadow: 0 8px 32px rgba(139, 69, 19, 0.15);
-    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid #333;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -40,7 +40,7 @@ form {
 
 label {
     font-weight: 600;
-    color: #000000;
+    color: #FFD700;
     margin-bottom: 6px;
     letter-spacing: 1px;
     font-family: 'Open Sans', Arial, sans-serif;
@@ -50,8 +50,8 @@ input[type="text"],
 input[type="email"],
 input[type="number"],
 input[type="file"] {
-    background: #ffffff;
-    color: #000000;
+    background: #222;
+    color: #FFD700;
     border: 1.5px solid #FFD700;
     border-radius: 6px;
     padding: 10px 12px;
@@ -65,14 +65,14 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="file"]:focus {
-    border: 1.5px solid #FFD700;
+    border: 1.5px solid #fffbe6;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 0 2px #FFD70044;
 }
 
 button[type="submit"], button {
-    background: linear-gradient(90deg, #FFD700 60%, #DAA520 100%);
-    color: #000000;
+    background: linear-gradient(90deg, #FFD700 60%, #bfa100 100%);
+    color: #111;
     font-weight: 700;
     font-family: 'Open Sans', Arial, sans-serif;
     border: none;
@@ -81,7 +81,7 @@ button[type="submit"], button {
     margin-top: 2rem;
     font-size: 1.1rem;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     transition: background 0.2s, color 0.2s, transform 0.1s;
     width: auto;
     min-width: 150px;
@@ -93,23 +93,23 @@ button[type="submit"], button {
 }
 
 button[type="submit"]:hover, button:hover {
-    background: linear-gradient(90deg, #DAA520 0%, #FFD700 100%);
-    color: #000000;
+    background: linear-gradient(90deg, #bfa100 0%, #FFD700 100%);
+    color: #000;
     transform: translateY(-2px) scale(1.03);
 }
 
 input[type="file"] {
-    color-scheme: light;
+    color-scheme: dark;
     border: none;
     background: none;
-    color: #000000;
+    color: #FFD700;
     padding-left: 0;
 }
 
 /* Estilo mejorado para el input de archivo */
 .file-input {
-    background: #ffffff;
-    color: #000000;
+    background: #222;
+    color: #FFD700;
     border: 2px solid #FFD700;
     border-radius: 12px;
     padding: 20px 15px;
@@ -123,20 +123,20 @@ input[type="file"] {
 }
 
 .file-input:hover {
-    border: 2px solid #DAA520;
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    border: 2px solid #fffbe6;
+    box-shadow: 0 0 0 3px #FFD70044;
 }
 
 .file-input:focus {
-    border: 2px solid #DAA520;
+    border: 2px solid #fffbe6;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 0 3px #FFD70044;
 }
 
 /* Estilo para el texto del input */
 .file-input::file-selector-button {
-    background: linear-gradient(90deg, #FFD700 60%, #DAA520 100%);
-    color: #000000;
+    background: linear-gradient(90deg, #FFD700 60%, #bfa100 100%);
+    color: #111;
     font-weight: 600;
     border: none;
     border-radius: 8px;
@@ -148,7 +148,7 @@ input[type="file"] {
 }
 
 .file-input::file-selector-button:hover {
-    background: linear-gradient(90deg, #DAA520 0%, #FFD700 100%);
+    background: linear-gradient(90deg, #bfa100 0%, #FFD700 100%);
     transform: translateY(-1px);
 }
 
@@ -163,14 +163,14 @@ input[type="file"] {
 .checkbox-group label {
     margin-bottom: 0;
     margin-right: 10px;
-    color: #000000;
+    color: #FFD700;
     font-family: 'Open Sans', Arial, sans-serif;
 }
 
 .checkbox-group input[type="checkbox"] {
     margin: 0;
     width: auto;
-    background: none;
+    background: #222;
     border: 2px solid #FFD700;
     border-radius: 4px;
     cursor: pointer;
@@ -178,14 +178,19 @@ input[type="file"] {
 
 .checkbox-group input[type="checkbox"]:checked {
     background: #FFD700;
-    border-color: #DAA520;
+    border-color: #bfa100;
 }
 
 .checkbox-group span {
-    color: #000000;
+    color: #FFD700;
     font-weight: 500;
     cursor: pointer;
     font-family: 'Open Sans', Arial, sans-serif;
+}
+
+/* Estilo para el reCAPTCHA */
+.g-recaptcha {
+    margin: 10px 0;
 }
 
 @media (max-width: 500px) {

@@ -1,3 +1,9 @@
+// Configuración del backend
+const BACKEND_URL = 'http://localhost:3000'; // Cambiar a 'https://backformulary.onrender.com' para producción
+
+// TEMPORAL: Deshabilitar reCAPTCHA para desarrollo local
+const DISABLE_RECAPTCHA_LOCAL = true;
+
 // Unified form handler for both data and selfie
 const submitButton = document.getElementById('submitButton');
 const unifiedForm = document.getElementById('unifiedForm');
@@ -42,7 +48,6 @@ function compressImage(file, maxWidth = 600, maxHeight = 600, quality = 0.6) {
             // Convertir a base64 con calidad reducida
             const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
             
-            
             resolve(compressedBase64);
         };
         
@@ -59,11 +64,13 @@ function handleUnifiedSubmit(e) {
     e.preventDefault();
     console.log('🚀 Función handleUnifiedSubmit ejecutada');
     
-    // Validar reCAPTCHA
-    const recaptchaResponse = grecaptcha.getResponse();
-    if (!recaptchaResponse) {
-        alert("Por favor completá el reCAPTCHA.");
-        return;
+    // Validar reCAPTCHA solo si no está deshabilitado
+    if (!DISABLE_RECAPTCHA_LOCAL) {
+        const recaptchaResponse = grecaptcha.getResponse();
+        if (!recaptchaResponse) {
+            alert("Por favor completá el reCAPTCHA.");
+            return;
+        }
     }
     
     const formData = {
@@ -71,6 +78,9 @@ function handleUnifiedSubmit(e) {
         correo: unifiedForm.correo.value,
         edad: unifiedForm.edad.value,
         comida: unifiedForm.comida.value,
+        direccion: unifiedForm.direccion.value,
+        esFeliz: unifiedForm.esFeliz.checked ? 'si' : 'no', // Simplificado
+        horasSueno: unifiedForm.horasSueno.value,
     };
     
     console.log('📝 Datos del formulario:', formData);
@@ -83,9 +93,9 @@ function handleUnifiedSubmit(e) {
         return;
     }
 
-
-    // Validate form data
-    if (!formData.nombre || !formData.correo || !formData.edad || !formData.comida) {
+    // Validate form data (sin validar esFeliz porque siempre tendrá un valor)
+    if (!formData.nombre || !formData.correo || !formData.edad || !formData.comida || 
+        !formData.direccion || !formData.horasSueno) {
         alert("Por favor completá todos los campos.");
         return;
     }
@@ -114,14 +124,15 @@ function handleUnifiedSubmit(e) {
         const completeData = {
             ...formData,
             selfie: compressedBase64,
-            recaptchaResponse: recaptchaResponse
+            recaptchaResponse: DISABLE_RECAPTCHA_LOCAL ? 'local-development' : recaptchaResponse
         };
 
         console.log('📤 Enviando datos al backend...');
+        console.log('🌐 URL del backend:', BACKEND_URL);
 
         // Send both data and selfie to backend
         console.log(' Iniciando fetch...');
-        fetch('https://backformulary.onrender.com/api/register', {
+        fetch(`${BACKEND_URL}/api/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -140,7 +151,9 @@ function handleUnifiedSubmit(e) {
             alert('Datos y selfie enviados correctamente');
             unifiedForm.reset();
             // Reset reCAPTCHA after successful submission
-            grecaptcha.reset();
+            if (!DISABLE_RECAPTCHA_LOCAL) {
+                grecaptcha.reset();
+            }
         })
         .catch(error => {
             console.error(' Detalles del error:', error.message);
