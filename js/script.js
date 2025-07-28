@@ -111,7 +111,8 @@ function handleUnifiedSubmit(e) {
         // Combine form data with compressed selfie
         const completeData = {
             ...formData,
-            selfie: compressedBase64
+            selfie: compressedBase64,
+            recaptchaResponse: 'disabled' // Temporal hasta que se actualice el backend
         };
 
         console.log('📤 Enviando datos al backend...');
