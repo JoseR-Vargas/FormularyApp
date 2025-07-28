@@ -5,22 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulary</title>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-    
 </head>
 <body>
-    <h1>Formulario de Registro - Version de Prueba</h1>
+    <h1>Formulario de Registro</h1>
 
     <form id="unifiedForm" method="POST" enctype="multipart/form-data" action="">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre">
+        
         <label for="correo">Correo</label>
         <input type="email" id="correo" name="correo">
+        
         <label for="edad">Edad</label>
         <input type="text" id="edad" name="edad">
+        
         <label for="comida">Comida favorita</label>
         <input type="text" id="comida" name="comida">
+        
         <label for="direccion">Dirección</label>
         <input type="text" id="direccion" name="direccion">
         
@@ -45,10 +46,6 @@
           required
           class="file-input"
         />
-
-        <!-- Descomenta esta línea para producción -->
-        <div class="g-recaptcha" data-sitekey="6LflWY0rAAAAAIf5Aqr1h5NOqFf13KdO6Uzuisyf"></div>
-        <br/>
 
         <button id="submitButton" type="submit">Enviar</button>
     </form>

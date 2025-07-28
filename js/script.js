@@ -1,9 +1,5 @@
 // Configuración del backend
 const BACKEND_URL = 'https://backformulary.onrender.com'; // URL de producción
-// const BACKEND_URL = 'http://localhost:3000'; // Para desarrollo local
-
-// TEMPORAL: Deshabilitar reCAPTCHA para desarrollo local
-const DISABLE_RECAPTCHA_LOCAL = false; // Cambiar a false para producción
 
 // Unified form handler for both data and selfie
 const submitButton = document.getElementById('submitButton');
@@ -65,22 +61,13 @@ function handleUnifiedSubmit(e) {
     e.preventDefault();
     console.log('🚀 Función handleUnifiedSubmit ejecutada');
     
-    // Validar reCAPTCHA solo si no está deshabilitado
-    if (!DISABLE_RECAPTCHA_LOCAL) {
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (!recaptchaResponse) {
-            alert("Por favor completá el reCAPTCHA.");
-            return;
-        }
-    }
-    
     const formData = {
         nombre: unifiedForm.nombre.value,
         correo: unifiedForm.correo.value,
         edad: unifiedForm.edad.value,
         comida: unifiedForm.comida.value,
         direccion: unifiedForm.direccion.value,
-        esFeliz: unifiedForm.esFeliz.checked ? 'si' : 'no', // Simplificado
+        esFeliz: unifiedForm.esFeliz.checked ? 'si' : 'no',
         horasSueno: unifiedForm.horasSueno.value,
     };
     
@@ -94,7 +81,7 @@ function handleUnifiedSubmit(e) {
         return;
     }
 
-    // Validate form data (sin validar esFeliz porque siempre tendrá un valor)
+    // Validate form data
     if (!formData.nombre || !formData.correo || !formData.edad || !formData.comida || 
         !formData.direccion || !formData.horasSueno) {
         alert("Por favor completá todos los campos.");
@@ -121,20 +108,14 @@ function handleUnifiedSubmit(e) {
             return;
         }
         
-        // Combine form data with compressed selfie and reCAPTCHA
+        // Combine form data with compressed selfie
         const completeData = {
             ...formData,
-            selfie: compressedBase64,
-            recaptchaResponse: DISABLE_RECAPTCHA_LOCAL ? 'local-development' : recaptchaResponse
+            selfie: compressedBase64
         };
 
         console.log('📤 Enviando datos al backend...');
         console.log('🌐 URL del backend:', BACKEND_URL);
-        console.log('📤 Datos a enviar:', {
-            ...formData,
-            selfieLength: compressedBase64.length,
-            recaptchaResponse: DISABLE_RECAPTCHA_LOCAL ? 'local-development' : 'present'
-        });
 
         // Send both data and selfie to backend
         console.log(' Iniciando fetch...');
@@ -158,10 +139,6 @@ function handleUnifiedSubmit(e) {
             console.log('✅ Datos y selfie enviados exitosamente:', response);
             alert('Datos y selfie enviados correctamente');
             unifiedForm.reset();
-            // Reset reCAPTCHA after successful submission
-            if (!DISABLE_RECAPTCHA_LOCAL) {
-                grecaptcha.reset();
-            }
         })
         .catch(error => {
             console.error('❌ Error en fetch:', error);
@@ -170,7 +147,7 @@ function handleUnifiedSubmit(e) {
         });
     })
     .catch(error => {
-        console.error(' Error comprimiendo imagen:', error);
+        console.error('❌ Error comprimiendo imagen:', error);
         alert('Error procesando la imagen');
     });
 }
