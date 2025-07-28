@@ -1,8 +1,9 @@
 // Configuración del backend
-const BACKEND_URL = 'http://localhost:3000'; // Cambiar a 'https://backformulary.onrender.com' para producción
+const BACKEND_URL = 'https://backformulary.onrender.com'; // URL de producción
+// const BACKEND_URL = 'http://localhost:3000'; // Para desarrollo local
 
 // TEMPORAL: Deshabilitar reCAPTCHA para desarrollo local
-const DISABLE_RECAPTCHA_LOCAL = true;
+const DISABLE_RECAPTCHA_LOCAL = false; // Cambiar a false para producción
 
 // Unified form handler for both data and selfie
 const submitButton = document.getElementById('submitButton');
@@ -129,6 +130,11 @@ function handleUnifiedSubmit(e) {
 
         console.log('📤 Enviando datos al backend...');
         console.log('🌐 URL del backend:', BACKEND_URL);
+        console.log('📤 Datos a enviar:', {
+            ...formData,
+            selfieLength: compressedBase64.length,
+            recaptchaResponse: DISABLE_RECAPTCHA_LOCAL ? 'local-development' : 'present'
+        });
 
         // Send both data and selfie to backend
         console.log(' Iniciando fetch...');
@@ -142,12 +148,14 @@ function handleUnifiedSubmit(e) {
         .then(res => {
             console.log(' Respuesta del servidor:', res.status, res.statusText);
             if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
+                return res.text().then(text => {
+                    throw new Error(`HTTP error! status: ${res.status}, message: ${text}`);
+                });
             }
             return res.json();
         })
         .then(response => {
-            console.log('Datos y selfie enviados exitosamente:', response);
+            console.log('✅ Datos y selfie enviados exitosamente:', response);
             alert('Datos y selfie enviados correctamente');
             unifiedForm.reset();
             // Reset reCAPTCHA after successful submission
@@ -156,6 +164,7 @@ function handleUnifiedSubmit(e) {
             }
         })
         .catch(error => {
+            console.error('❌ Error en fetch:', error);
             console.error(' Detalles del error:', error.message);
             alert('Error al enviar los datos y selfie: ' + error.message);
         });
